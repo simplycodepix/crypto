@@ -1,0 +1,20 @@
+.navigation {
+    margin: 0 0 40px;
+}
+.navigation-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.navigation-list li {
+    margin: 0 30px;
+}
+.navigation-list li a {
+    display: block;
+    padding: 15px 30px;
+    background: #eee;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 8px;
+    font-weight: 700;
+}
