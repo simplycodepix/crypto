@@ -54,10 +54,24 @@ button {
     align-items: center;
 }
 
+.analysis-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
 .analysis-result {
     display: flex;
     align-items: center;
     margin: 0 0 10px;
+    transition: .15s ease-in-out;
+}
+
+.analysis-result:hover,
+.analysis-result.active {
+    color: red;
+    cursor: pointer;
+    padding: 0 0 0 10px;
 }
 
 .analysis-result .title {
@@ -70,4 +84,27 @@ button {
     display: block;
     font-weight: 700;
     flex: 1;
+}
+
+.analysis-selected-result {
+    padding: 30px 30px;
+    background: #eee;
+    border-radius: 4px;
+    margin: 0 0 0 40px;
+}
+
+.analysis-selected-result-title {
+    font-weight: 700;
+    font-size: 21px;
+    margin: 0 0 15px;
+    color: #c1c1c1;
+}
+
+.analysis-selected-result-value {
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.analysis-selected-result-key {
+    font-weight: 700;
 }

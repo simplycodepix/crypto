@@ -12,7 +12,9 @@ const AppContainer: React.FC = () => {
   return (
     <Router>
       <div className="App">
-        <Navigation />
+        <div className="container">
+          <Navigation />
+        </div>
         <Switch>
           <Route exact path='/' component={HomeContainer} />
           <Route exact path='/caesar' component={CaesarContainer} />
