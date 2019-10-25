@@ -1,28 +1,35 @@
-const caesarCipher = (text: string, shiftLength: number, lang: string) => {
+export const caesarCipher = (text: string, shiftLength?: any, alphabet?: string): string => {
     let langLength: number = 26;
-    let textLength: number = text.length;
-    let encryptedCharacters: Array<string> = [];
-    let counter: number = 0;
 
-    text.split('').map((c: string) => {
-        counter++;
+    if (shiftLength < 0) 
+        return caesarCipher(text, shiftLength + langLength);
 
-        if (c.match(/[a-z]/i)) {
-            let charCode = c.charCodeAt(0);
-            let shift = charCode >= 65 && charCode <= 90 ? 65 : charCode >= 97 && charCode <= 122 ? 97 : 0;
-            let encryptedC = String.fromCharCode(((charCode - shift + shiftLength) % langLength) + shift);
+    if (shiftLength !== undefined) {
+        return text.split('').map((c: string) => {
+            if (c.match(/[a-z]/i)) {
+                let code = c.charCodeAt(0);
+                let shift = code > 64 && code < 91 ? 65 : code > 96 && code < 123 ? 97 : 0;
 
-            encryptedCharacters.push(encryptedC);
-            return encryptedC;
-        } else {
-            encryptedCharacters.push(c);
+                let encryptedC = String.fromCharCode((code - shift + parseInt(shiftLength)) % langLength + shift);
+                return encryptedC;
+            }
+    
             return c;
-        }
-    });
-
-    if (counter === textLength) {
-        return encryptedCharacters;
+        }).join('');
+    } else {
+        return text;
     }
 }
 
-export default caesarCipher;
+export const caesarCipherAnalyser = (text: string) => {
+    let langLength: number = 26;
+    let analysisResult = [];
+
+    for (let i = 1; i <= langLength; i++) {
+        let encryptedText = caesarCipher(text, -i);
+
+        analysisResult.push(encryptedText);
+    }
+
+    return analysisResult;
+}
