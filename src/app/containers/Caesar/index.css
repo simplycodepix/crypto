@@ -71,7 +71,7 @@ button {
 .analysis-result.active {
     color: red;
     cursor: pointer;
-    padding: 0 0 0 10px;
+    transform: translate(10px, 0);
 }
 
 .analysis-result .title {
@@ -90,7 +90,7 @@ button {
     padding: 30px 30px;
     background: #eee;
     border-radius: 4px;
-    margin: 0 0 0 40px;
+    margin: 0 0 30px 40px;
 }
 
 .analysis-selected-result-title {

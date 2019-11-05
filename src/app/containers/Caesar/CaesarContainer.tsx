@@ -1,5 +1,5 @@
 import React from 'react';
-import { caesarCipher, caesarCipherAnalyser } from '../../ciphers/CaesarCipher';
+import { caesarCipher, caesarCipherAnalyser, frequencyCounter, compareFrequencies, getFrequencyInDecreasingOrder } from '../../ciphers/CaesarCipher';
 
 import './index.css';
 import CaesarResult from '../../components/Caesar/CaesarResult';
@@ -15,15 +15,21 @@ class Caesar extends React.Component<any, any> {
             analysisText: '',
             inputShift: 5,
             analysisResults: [],
-            selectedResultId: undefined
+            selectedResultId: undefined,
+            frequencyAnalysisResult: undefined
         }
     }
 
     runAnalysis = () => {
         const analysisResult = caesarCipherAnalyser(this.state.analysisText);
+        let frequencyCounterResult = getFrequencyInDecreasingOrder(frequencyCounter(this.state.analysisText));
+        let compareFrequenciesResult = compareFrequencies(frequencyCounterResult);
+        let frequencyAnalysisResult = caesarCipher(this.state.analysisText, -1 * compareFrequenciesResult);
 
         this.setState({
             analysisResults: analysisResult,
+            frequencyAnalysisResult,
+            frequencyAnalysisResultKey: compareFrequenciesResult,
             selectedResultId: undefined
         })
     }
@@ -47,7 +53,7 @@ class Caesar extends React.Component<any, any> {
     }
 
     render() {
-        const { inputValue, inputShift, analysisResults, selectedResultId } = this.state;
+        const { inputValue, inputShift, analysisResults, selectedResultId, frequencyAnalysisResult, frequencyAnalysisResultKey } = this.state;
 
         return (
             <div className="caesar-page">
@@ -89,7 +95,8 @@ class Caesar extends React.Component<any, any> {
                                     ))}
                                 </div>
                                 <div className="analysis-sidebar">
-                                    {selectedResultId ? <CaesarSelectedResult result={analysisResults[selectedResultId]} resultKey={selectedResultId + 1} /> : null}
+                                    {frequencyAnalysisResult ? <CaesarSelectedResult result={frequencyAnalysisResult} resultKey={frequencyAnalysisResultKey} title="Automatically Selected Result: " /> : null}
+                                    {selectedResultId ? <CaesarSelectedResult result={analysisResults[selectedResultId]} resultKey={selectedResultId + 1} title="Selected Result: " /> : null}
                                 </div>
                             </div>
                         </div>
