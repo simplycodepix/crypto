@@ -5,21 +5,32 @@ import './index.css';
 
 let activeStyle = {color: '#333030'}
 
+const navLinks = [
+    {
+        to: '/caesar',
+        title: 'Caesar'
+    },
+    {
+        to: '/affine',
+        title: 'Affine'
+    },
+    {
+        to: '/bacon',
+        title: 'Bacon'
+    }
+]
+
 const Navigation: React.FC = () => (
     <nav className="navigation">
         <ul className="navigation-list">
             <li>
                 <NavLink to='/' exact activeStyle={activeStyle}>Home</NavLink>
             </li>
-            <li>
-                <NavLink to='/caesar' activeStyle={activeStyle}>Caesar</NavLink>
-            </li>
-            <li>
-                <NavLink to='/affine' activeStyle={activeStyle}>Affine</NavLink>
-            </li>
-            <li>
-                <NavLink to='/bacon' activeStyle={activeStyle}>Bacon</NavLink>
-            </li>
+            {navLinks.map(link => (
+                <li>
+                    <NavLink to={link.to} activeStyle={activeStyle}>{link.title}</NavLink>
+                </li>
+            ))}
         </ul>
     </nav>
 );
