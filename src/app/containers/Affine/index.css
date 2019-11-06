@@ -1,0 +1,110 @@
+.caesar-page-title {
+    margin: 0 0 25px;
+    font-size: 30px;
+}
+
+.input-box {
+    margin: 0 0 30px;
+}
+
+.input-box input {
+    height: 40px;
+    margin: 0 15px 0 0;
+    padding: 0 15px;
+    width: calc(50% - 15px);
+    background: #eee;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, .3);
+}
+
+.input-box input:focus {
+    outline: none;
+}
+
+.input-box .encode-shift {
+    width: 80px;
+}
+
+button {
+    height: 40px;
+    margin: 0 15px 0 0;
+    padding: 0 30px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, .3);
+}
+
+.text {
+    margin: 0 0 40px;
+}
+
+.text-title {
+    margin: 0 0 5px;
+}
+
+.text-value {
+    box-shadow: 0 0 3px 3px rgba(0, 0, 0, .1) inset;
+    background: #eee;
+    padding: 15px;
+    border-radius: 4px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.analysis-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.analysis-result {
+    display: flex;
+    align-items: center;
+    margin: 0 0 10px;
+    transition: .15s ease-in-out;
+}
+
+.analysis-result:hover,
+.analysis-result.active {
+    color: red;
+    cursor: pointer;
+    transform: translate(10px, 0);
+}
+
+.analysis-result .title {
+    width: 80px;
+    display: block;
+    margin: 0 10px 0 0;
+}
+
+.analysis-result .value {
+    display: block;
+    font-weight: 700;
+    flex: 1;
+}
+
+.analysis-selected-result {
+    padding: 30px 30px;
+    background: #eee;
+    border-radius: 4px;
+    margin: 0 0 30px 40px;
+}
+
+.analysis-selected-result-title {
+    font-weight: 700;
+    font-size: 21px;
+    margin: 0 0 15px;
+    color: #c1c1c1;
+}
+
+.analysis-selected-result-value {
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.analysis-selected-result-key {
+    font-weight: 700;
+}

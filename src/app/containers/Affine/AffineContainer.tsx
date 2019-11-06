@@ -1,39 +1,31 @@
 import React from 'react';
-import { caesarCipher, caesarCipherAnalyser } from '../../ciphers/CaesarCipher';
-import { frequencyCounter, compareFrequencies, getFrequencyInDecreasingOrder } from '../../ciphers/frequency';
+import { affineCipher, affineCipherAnalyser } from '../../ciphers/AffineCipher';
 
 import './index.css';
-import CaesarResult from '../../components/Caesar/CaesarResult';
-import CaesarSelectedResult from '../../components/Caesar/CaesarSelectedResult';
+import AffineResult from '../../components/Affine/AffineResult';
+import AffineSelectedResult from '../../components/Affine/AffineSelectedResult';
 
-class Caesar extends React.Component<any, any> {
+class Affine extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
-
-        console.log(props);
 
         this.state = {
             encryptedMessage: '',
             inputValue: '',
             analysisText: '',
-            inputShift: 5,
+            inputShiftA: 3,
+            inputShiftB: 4,
             analysisResults: [],
             selectedResultId: undefined,
             frequencyAnalysisResult: undefined
         }
     }
 
-    runAnalysis = () => {
-        const analysisResult = caesarCipherAnalyser(this.state.analysisText);
-        let frequencyCounterResult = getFrequencyInDecreasingOrder(frequencyCounter(this.state.analysisText));
-        let compareFrequenciesResult = compareFrequencies(frequencyCounterResult);
-        let frequencyAnalysisResult = caesarCipher(this.state.analysisText, -1 * compareFrequenciesResult);
+    runAnalysis = async () => {
+        const analysisResult = affineCipherAnalyser(this.state.analysisText);
 
         this.setState({
-            analysisResults: analysisResult,
-            frequencyAnalysisResult,
-            frequencyAnalysisResultKey: compareFrequenciesResult,
-            selectedResultId: undefined
+            analysisResults: analysisResult
         })
     }
 
@@ -56,19 +48,20 @@ class Caesar extends React.Component<any, any> {
     }
 
     render() {
-        const { inputValue, inputShift, analysisResults, selectedResultId, frequencyAnalysisResult, frequencyAnalysisResultKey } = this.state;
+        const { inputValue, inputShiftA, inputShiftB, analysisResults, selectedResultId, frequencyAnalysisResult, frequencyAnalysisResultKey } = this.state;
 
         return (
             <div className="caesar-page">
                 <div className="container">
 
                     <h2 className="caesar-page-title">
-                        Caesar cipher: Encode Text
+                        Affine cipher: Encode Text
                     </h2>
 
                     <div className="input-box">
                         <input type="text" placeholder="Text" name="inputValue" value={inputValue} onChange={this.handleInputChange} />
-                        <input type="text" className="encode-shift" name="inputShift" value={inputShift} onChange={this.handleInputChange} />
+                        <input type="text" className="encode-shift" name="inputShiftA" value={inputShiftA} onChange={this.handleInputChange} />
+                        <input type="text" className="encode-shift" name="inputShiftB" value={inputShiftB} onChange={this.handleInputChange} />
                     </div>
 
                     <div className="text">
@@ -76,7 +69,7 @@ class Caesar extends React.Component<any, any> {
                             Encoded Text:
                         </div>
                         <div className="text-value">
-                            {caesarCipher(inputValue, inputShift)}
+                            {affineCipher(inputValue, parseInt(inputShiftA), parseInt(inputShiftB))}
                         </div>
                     </div>
 
@@ -84,7 +77,7 @@ class Caesar extends React.Component<any, any> {
                     <div className="analysis">
                         <div className="analysis-content-wrap">
                             <h2 className="caesar-page-title">
-                                Caesar cipher: Analyze Encoded Text
+                                Affine cipher: Analyze Encoded Text
                             </h2>
                             <div className="input-box">
                                 <input type="text" placeholder="Text" name="analysisText" value={this.state.analysisText} onChange={this.handleInputChange} />
@@ -94,12 +87,12 @@ class Caesar extends React.Component<any, any> {
                             <div className="analysis-content">
                                 <div className="analysis-list">
                                     {analysisResults.map((result: any, i: number) => (
-                                        <CaesarResult key={i} result={result} index={i} selected={this.isActiveResult(i)} onClick={() => this.handleResultClick(i)} />
+                                        <AffineResult key={i} result={result} index={i} selected={this.isActiveResult(i)} onClick={() => this.handleResultClick(i)} />
                                     ))}
                                 </div>
                                 <div className="analysis-sidebar">
-                                    {frequencyAnalysisResult ? <CaesarSelectedResult result={frequencyAnalysisResult} resultKey={frequencyAnalysisResultKey} title="Automatically Selected Result: " /> : null}
-                                    {selectedResultId ? <CaesarSelectedResult result={analysisResults[selectedResultId]} resultKey={selectedResultId + 1} title="Selected Result: " /> : null}
+                                    {frequencyAnalysisResult ? <AffineSelectedResult result={frequencyAnalysisResult} resultKey={frequencyAnalysisResultKey} title="Automatically Selected Result: " /> : null}
+                                    {selectedResultId ? <AffineSelectedResult result={analysisResults[selectedResultId]} resultKey={selectedResultId + 1} title="Selected Result: " /> : null}
                                 </div>
                             </div>
                         </div>
@@ -111,4 +104,4 @@ class Caesar extends React.Component<any, any> {
     }
 }
 
-export default Caesar;
+export default Affine;

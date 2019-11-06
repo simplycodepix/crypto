@@ -100,3 +100,48 @@ export const alphabetFrequency = [
         frequency: 0.08,
     }
 ];
+
+
+interface IFrequency {
+    char: string,
+    frequency: number
+}
+
+export const frequencyCounter = (text: string) => {
+    let frequencyArray: Array<any> = [];
+
+    let textLength = text.length;
+
+    text.split('').map(c => {
+        if (!(frequencyArray.filter((entry: IFrequency) => entry.char === c.toUpperCase()).length > 0)) {
+            if (c.match(/[a-z]/i)) {
+                frequencyArray.push({ char: c.toUpperCase(), frequency: 1 });
+            }
+        } else {
+            let found = frequencyArray.find((entry: IFrequency) => entry.char === c.toUpperCase());
+            found.frequency++;
+        }
+
+        return c;
+    });
+
+    frequencyArray.map((entry: IFrequency) => {
+        entry.frequency = entry.frequency / textLength * 100
+        return entry;
+    })
+
+    return frequencyArray;
+}
+
+export const getFrequencyInDecreasingOrder = (frequencyArray: any) => {
+    return frequencyArray.sort((a: any, b: any) => b.frequency - a.frequency)
+}
+
+export const compareFrequencies = (frequencyArray: Array<IFrequency>) => {
+    let alphabetFrequencyInOrder = getFrequencyInDecreasingOrder(alphabetFrequency);
+
+    let aCharCode = alphabetFrequencyInOrder[0].char.charCodeAt(0);
+    let bCharCode = frequencyArray[0].char.charCodeAt(0);
+
+    return bCharCode - aCharCode;
+}
