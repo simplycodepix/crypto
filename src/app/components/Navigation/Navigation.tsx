@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import './index.css';
 
-let activeStyle = {color: '#333030'}
+let activeStyle = { color: '#333030' }
 
 const navLinks = [
     {
@@ -27,7 +27,7 @@ const Navigation: React.FC = () => (
                 <NavLink to='/' exact activeStyle={activeStyle}>Home</NavLink>
             </li>
             {navLinks.map(link => (
-                <li>
+                <li key={link.title}>
                     <NavLink to={link.to} activeStyle={activeStyle}>{link.title}</NavLink>
                 </li>
             ))}

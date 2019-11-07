@@ -1,4 +1,4 @@
-let alphabet = 'abcdefghijklmnopqrstuvwxyz';
+let alphabet = 'abcdefghijklmnopqrstuvwxyz .,!?’';
 
 const convertBinaryToDecimal = (binary: string): number => {
     return parseInt((binary).replace(/[^01]/gi, ''), 2);

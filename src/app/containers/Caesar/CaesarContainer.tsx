@@ -10,8 +10,6 @@ class Caesar extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
 
-        console.log(props);
-
         this.state = {
             encryptedMessage: '',
             inputValue: '',

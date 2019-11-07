@@ -1,4 +1,4 @@
-import { getFrequencyInDecreasingOrder, frequencyCounter, compareFrequencies } from "./frequency";
+// import { getFrequencyInDecreasingOrder, frequencyCounter, compareFrequencies } from "./frequency";
 
 export const affineCipher = (text: string, a: number, b: number, alphabet?: string) => {
     let langLength: number = 26;
@@ -19,16 +19,15 @@ export const affineCipher = (text: string, a: number, b: number, alphabet?: stri
 
 export const affineCipherDecode = (text: string, a: number, b: number, alphabet?: string) => {
     let langLength: number = 26;
-    let flag = 0;
-    let a_inv = 0;
+    let flag = 0, a_inv = 0;
 
     for (let i = 0; i < langLength; i++) {
         flag = (a * i) % langLength;
 
-        if (flag === 1) {
-            a_inv = i;
-        }
+        if (flag === 1) { a_inv = i; }
     }
+
+    if (a_inv === 0) return;
 
     return text.split('').map((c: string) => {
         if (c.match(/[a-z]/i)) {
@@ -48,13 +47,15 @@ export const affineCipherAnalyser = (text: string) => {
     let langLength: number = 26;
     let analysisResult = [];
 
-    let frequencyCounterResult = getFrequencyInDecreasingOrder(frequencyCounter(text));
-    let compareFrequenciesResult = Math.abs(compareFrequencies(frequencyCounterResult));
+    // let frequencyCounterResult = getFrequencyInDecreasingOrder(frequencyCounter(text));
+    // let compareFrequenciesResult = Math.abs(compareFrequencies(frequencyCounterResult));
     // let frequencyAnalysisResult = affineCipher(text, compareFrequenciesResult, 1);
 
     for (let i = 1; i <= langLength; i++) {
         for (let j = 1; j <= langLength; j++) {
-            analysisResult.push(affineCipher(text, i, j));
+            let decodeResult = affineCipherDecode(text, i, j);
+
+            if (decodeResult) { analysisResult.push(decodeResult); }
         }
     }
 
