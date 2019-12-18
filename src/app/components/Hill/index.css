@@ -1,0 +1,13 @@
+.matrix {
+    display: flex;
+}
+
+.matrix-col {
+    margin: 0 0 15px;
+}
+
+.input-box .matrix-col input {
+    width: 50px;
+    height: 30px;
+    text-align: center;
+}

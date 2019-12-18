@@ -1,8 +1,6 @@
 let alphabet = 'abcdefghijklmnopqrstuvwxyz .,!?’';
 
-const convertBinaryToDecimal = (binary: string): number => {
-    return parseInt((binary).replace(/[^01]/gi, ''), 2);
-}
+const convertBinaryToDecimal = (binary: string): number => parseInt((binary).replace(/[^01]/gi, ''), 2);
 
 export const baconCipher = (text: string) => {
     let encodedText = text.split('').map(c => {
@@ -11,6 +9,8 @@ export const baconCipher = (text: string) => {
 
             return code > 64 && code < 91 ? 1 : code > 96 && code < 123 ? 0 : 0;
         }
+
+        return null;
     }).join('');
 
 

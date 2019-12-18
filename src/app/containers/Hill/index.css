@@ -1,0 +1,9 @@
+.hill-page-title {
+    margin: 0 0 25px;
+    font-size: 30px;
+}
+
+.input-box {
+    display: flex;
+    align-items: flex-start;
+}

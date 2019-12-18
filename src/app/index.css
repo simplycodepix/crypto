@@ -27,3 +27,8 @@ ul {
   padding: 0 10px;
   margin: 0 auto;
 }
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  font-family: 'Montserrat', sans-serif;
+}

@@ -17,6 +17,10 @@ const navLinks = [
     {
         to: '/bacon',
         title: 'Bacon'
+    },
+    {
+        to: '/hill',
+        title: 'Hill'
     }
 ]
 
