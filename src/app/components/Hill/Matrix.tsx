@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { zeros } from 'mathjs';
 
 import './index.css';
 
 export const Matrix = ({ handleChange, matrixData }: any) => {
-    const grid: any = zeros(3, 3).valueOf();
+    const grid: any = [zeros(3, 3).valueOf()];
 
     return (
         <div className='matrix'>

@@ -53,13 +53,19 @@ const encrypt = (keyMatrix: any, messageTrigrams: any) => {
 const decrypt = (keyMatrix: any, messageTrigrams: any) => {
     const reversedKeyMatrix = inv(keyMatrix);
 
-    console.log(reversedKeyMatrix);
-
     return messageTrigrams.map((trigram: any) => {
         const matrixTrigram = matrix(trigram);
         const multiplyResult: any = multiply(matrixTrigram, reversedKeyMatrix).valueOf();
 
-        return multiplyResult.map((item: number) => alphabet[item % alphabetLength]).join('');
+
+        return multiplyResult.map((item: number) => {
+            // let code = (item % alphabetLength) + alphabetFirstCode;
+            // let position = Math.round(code % alphabetFirstCode);
+
+            console.log(item);
+
+            return alphabet[item];
+        }).join('');
     });
 }
 
@@ -69,5 +75,9 @@ export const hillCipher = (message: string, key: any, withMatrix = false): Array
     const keyMatrix = withMatrix ? matrix(key) : buildKeyMatrix(key);
     const messageTrigrams = buildMessageTrigrams(message);
 
-    return encrypt(keyMatrix, messageTrigrams);
+    const result = decrypt(keyMatrix, messageTrigrams);
+
+    console.log(result);
+    
+    return decrypt(keyMatrix, messageTrigrams);
 };
