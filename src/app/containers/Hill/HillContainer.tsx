@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { zeros } from 'mathjs';
 
-import { hillCipher } from '../../ciphers/HillCipher';
+import { alphabet, hillCipher } from '../../ciphers/HillCipher';
 import { Matrix } from '../../components/Hill/Matrix';
 
 import './index.css';
@@ -90,6 +90,10 @@ const HillContainer = () => {
                         {encodedText}
                     </div>
                 </div>
+
+                {alphabet.map((c, i) => (
+                    <div key={`ksd-${i}`}>{c} - {i} - {c.charCodeAt(0)}</div>
+                ))}
             </div>
         </div>
     )

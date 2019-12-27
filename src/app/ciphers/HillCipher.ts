@@ -1,42 +1,42 @@
 import { matrix, multiply, inv, zeros, det, mod } from 'mathjs';
 
-let alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
-// let alphabet = 'абвгдежзийклмнопрстуфхцчшщъыьэюя'.toUpperCase().split('');
+export let alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
+// export let alphabet = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'.toUpperCase().split('');
 let alphabetLength = alphabet.length;
 let alphabetFirstCode = alphabet[0].charCodeAt(0);
 // let alphabetLastCode = alphabet[alphabetLength - 1].charCodeAt(0);
+console.log('first code', alphabetFirstCode);
+console.log('Length', alphabetLength);
 
 const convertCharToItsPosition = (char: string) => mod(char.toUpperCase().charCodeAt(0), alphabetFirstCode);
 
 const buildKeyMatrix = (key: string) => {
     let arr: any = [[], [], []];
 
-    key.split('').map((c, i) => {
-        if (c.match(/[a-z]/i)) {
-            let dimension: any = mod(i, 3);
+    key.toUpperCase().split('').map((c, i) => {
+        let dimension: any = mod(i, 3);
 
-            let position = convertCharToItsPosition(c);
+        let position = alphabet.indexOf(c);
 
-            arr[dimension].push(position);
+        arr[dimension].push(position);
 
-            return position;
-        }
+        return position;
 
-        return c;
+        // return c;
     });
 
     return matrix(arr);
 }
 
 const splitMessage = (message: string) => {
-    return message.toUpperCase().trim().replace(' ', '').match(/.{1,3}/g);
+    return message.toUpperCase().match(/.{1,3}/g);
 }
 
 const buildMessageTrigrams = (message: string) => {
     const splitedMessage: any = splitMessage(message);
 
     return splitedMessage.map((trigram: any) => {
-        return trigram.split('').map((c: string) => convertCharToItsPosition(c));
+        return trigram.split('').map((c: string) => alphabet.indexOf(c));
     });
 }
 
@@ -45,22 +45,33 @@ const encrypt = (keyMatrix: any, messageTrigrams: any) => {
         const matrixTrigram = matrix(trigram);
         const multiplyResult: any = multiply(matrixTrigram, keyMatrix).valueOf();
 
-        return multiplyResult.map((item: number) => alphabet[item % alphabetLength]).join('');
+        return multiplyResult.map((item: number) => {
+            console.log(item % alphabetLength, item);
+
+            return alphabet[item % alphabetLength];
+        }).join('');
     });
+}
+
+const egcd = (a: number, b: number) => {
+    if (a === 0)
+        return { gcd: b, x: 0, y: 1 };
+    else {
+        let { gcd, x, y }: any = egcd(b % a, a);
+        return { gcd, x: y - (b / a) * x, y: x };
+    }
 }
 
 // https://www.thecrazyprogrammer.com/2017/02/hill-cipher-c.html
 const decrypt = (keyMatrix: any, messageTrigrams: any) => {
-    const reversedKeyMatrix = inv(keyMatrix);
-    const reversedKeyMatrixValue: any = reversedKeyMatrix.valueOf();
 
-    let matrixResult: any = zeros(3, 3).valueOf();
+    const determinant: any = mod(Math.round(det(keyMatrix)), alphabetLength);
+    let x: any, y: any;
 
-    let determinant = mod(Math.round(det(keyMatrix)), 26);
+    console.log(egcd(30, 50));
 
-    console.log(determinant);
-    // console.log(multiply(reversedKeyMatrixValue, 26));
-    console.log(reversedKeyMatrixValue);
+
+
 
     // for (let i in reversedKeyMatrixValue)
     //     for (let trigram of messageTrigrams)
@@ -101,9 +112,10 @@ export const hillCipher = (message: string, key: any, withMatrix = false): Array
     if (!message || !key) return [];
     try {
         const keyMatrix = withMatrix ? matrix(key) : buildKeyMatrix(key);
+        console.log('matrix', keyMatrix);
         const messageTrigrams = buildMessageTrigrams(message);
-    
-        return encrypt(keyMatrix, messageTrigrams);
+
+        return decrypt(keyMatrix, messageTrigrams);
     } catch (error) {
         console.log(error);
     }
