@@ -10,6 +10,8 @@ import HomeContainer from './containers/Home/HomeContainer';
 import Navigation from './components/Navigation/Navigation';
 import BaconContainer from './containers/Bacon/BaconContainer';
 import HillContainer from './containers/Hill/HillContainer';
+import HillContainerDecode from './containers/Hill/HillContainerDecode';
+import HillContainerAnalyse from './containers/Hill/HillContainerAnalyse';
 
 const AppContainer: React.FC = () => {
   return (
@@ -24,6 +26,8 @@ const AppContainer: React.FC = () => {
           <Route exact path='/affine' component={AffineContainer} />
           <Route exact path='/bacon' component={BaconContainer} />
           <Route exact path='/hill' component={HillContainer} />
+          <Route exact path='/hilldecode' component={HillContainerDecode} />
+          <Route exact path='/hillanalyse' component={HillContainerAnalyse} />
           <Route component={PageNotFound} />
         </Switch>
       </div>

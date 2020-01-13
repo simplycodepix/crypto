@@ -1,14 +1,8 @@
-import { matrix, multiply, inv, zeros, det, mod } from 'mathjs';
+// Готовые методы для математических вычислений
+import { matrix, multiply, inv, det, mod, transpose } from 'mathjs';
 
-export let alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
-// export let alphabet = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'.toUpperCase().split('');
+export let alphabet = 'абвгдежзийклмнопрстуфхцчшщъыьэюя'.toUpperCase().split('');
 let alphabetLength = alphabet.length;
-let alphabetFirstCode = alphabet[0].charCodeAt(0);
-// let alphabetLastCode = alphabet[alphabetLength - 1].charCodeAt(0);
-console.log('first code', alphabetFirstCode);
-console.log('Length', alphabetLength);
-
-const convertCharToItsPosition = (char: string) => mod(char.toUpperCase().charCodeAt(0), alphabetFirstCode);
 
 const buildKeyMatrix = (key: string) => {
     let arr: any = [[], [], []];
@@ -40,79 +34,125 @@ const buildMessageTrigrams = (message: string) => {
     });
 }
 
+function modInverse(a: any, m: any) {
+    // validate inputs
+    [a, m] = [Number(a), Number(m)]
+    if (Number.isNaN(a) || Number.isNaN(m)) {
+        return NaN // invalid input
+    }
+    a = (a % m + m) % m
+    if (!a || m < 2) {
+        return NaN // invalid input
+    }
+    // find the gcd
+    const s = []
+    let b = m
+    while (b) {
+        [a, b] = [b, a % b]
+        s.push({ a, b })
+    }
+    if (a !== 1) {
+        return NaN // inverse does not exists
+    }
+    // find the inverse
+    let x = 1
+    let y = 0
+    for (let i = s.length - 2; i >= 0; --i) {
+        [x, y] = [y, x - y * Math.floor(s[i].a / s[i].b)]
+    }
+    return (y % m + m) % m
+}
+
 const encrypt = (keyMatrix: any, messageTrigrams: any) => {
     return messageTrigrams.map((trigram: any) => {
         const matrixTrigram = matrix(trigram);
         const multiplyResult: any = multiply(matrixTrigram, keyMatrix).valueOf();
 
         return multiplyResult.map((item: number) => {
-            console.log(item % alphabetLength, item);
-
             return alphabet[item % alphabetLength];
         }).join('');
     });
 }
 
-const egcd = (a: number, b: number) => {
-    if (a === 0)
-        return { gcd: b, x: 0, y: 1 };
-    else {
-        let { gcd, x, y }: any = egcd(b % a, a);
-        return { gcd, x: y - (b / a) * x, y: x };
-    }
+const adjudantMatrix = (matrix: any) => {
+    return matrix.map((row: any) => {
+        return row.map((number: any) => {
+            return mod(Math.round(number), alphabetLength);
+        });
+    })
+};
+
+const inverseKeyMatrix = (keyMatrix: any) => {
+    const inversedMatrix: any = inv(keyMatrix).valueOf();
+
+    let determinant: any = Math.round(det(keyMatrix));
+    let inversedDeterminant = modInverse(determinant, alphabetLength);
+    let algDop = multiply(determinant, inversedMatrix);
+    let adjudantKeyMatrix = adjudantMatrix(algDop);
+    let modInversedMatrix = adjudantMatrix(multiply(inversedDeterminant, adjudantKeyMatrix));
+
+    return modInversedMatrix;
 }
 
-// https://www.thecrazyprogrammer.com/2017/02/hill-cipher-c.html
 const decrypt = (keyMatrix: any, messageTrigrams: any) => {
+    const inversedMatrix: any = inv(keyMatrix.valueOf()).valueOf();
 
-    const determinant: any = mod(Math.round(det(keyMatrix)), alphabetLength);
-    let x: any, y: any;
+    let determinant: any = Math.round(det(keyMatrix));
+    let inversedDeterminant = modInverse(determinant, alphabetLength);
+    let algDop = multiply(determinant, inversedMatrix);
+    let adjudantKeyMatrix = adjudantMatrix(algDop);
+    let modInversedMatrix = adjudantMatrix(multiply(inversedDeterminant, adjudantKeyMatrix));
 
-    console.log(egcd(30, 50));
+    return messageTrigrams.map((trigram: any) => {
+        const matrixTrigram = matrix(trigram);
+        const multiplyResult: any = multiply(matrixTrigram, modInversedMatrix).valueOf();
 
-
-
-
-    // for (let i in reversedKeyMatrixValue)
-    //     for (let trigram of messageTrigrams)
-    //         for (let j in reversedKeyMatrixValue[i]) {
-    //             console.log(trigram);
-
-    //             // let code = alphabet[trigram[j]].charCodeAt(0);
-    //             // matrixResult[i][j] = matrixResult[i][j] + reversedKeyMatrixValue[j][i] * code;
-    //         }
-
-    // console.log(messageTrigrams.valueOf());
-    // console.log(reversedKeyMatrixValue);
-
-    // return messageTrigrams.map((trigram: any) => {
-    //     console.log('Trigram: ', trigram);
-
-    //     trigram.map((c: any) => console.log(c.charCodeAt(0)));
-
-    //     const matrixTrigram = matrix(trigram);
-    //     const multiplyResult: any = multiply(matrixTrigram, reversedKeyMatrix).valueOf();
-
-    //     console.log('Result: ', multiplyResult);
-
-    //     return multiplyResult.map((item: number) => {
-    //         let code = Math.abs(item % alphabetLength) + alphabetFirstCode;
-    //         // let position = Math.round(code % alphabetFirstCode);
-
-    //         // console.log(item);
-
-    //         return alphabet[Math.floor(code % alphabetFirstCode)];
-    //     }).join('');
-    // });
-
-    return [];
+        return multiplyResult.map((item: number) => {
+            return alphabet[item % alphabetLength];
+        }).join('');
+    });
 }
+
+export const analyseCipher = (message: string, cipheredKey: string, openKey: string) => {
+    const cipheredKeyMatrix = buildKeyMatrix(cipheredKey);
+    const openKeyMatrix = buildKeyMatrix(openKey);
+    const inversedOpenKeyMatrix = inverseKeyMatrix(openKeyMatrix);
+    const matrixMultiply = adjudantMatrix(multiply(cipheredKeyMatrix, inversedOpenKeyMatrix).valueOf());
+    const inverseMultipliedMatrix: any = transpose(inverseKeyMatrix(matrixMultiply));
+
+    console.log(matrixMultiply);
+    console.log(inverseMultipliedMatrix);
+
+    const messageTrigrams = buildMessageTrigrams(message);
+    return messageTrigrams.map((trigram: any) => {
+        const matrixTrigram = matrix(trigram);
+        const multiplyResult: any = multiply(matrixTrigram, inverseMultipliedMatrix).valueOf();
+
+        return multiplyResult.map((item: number) => {
+            return alphabet[item % alphabetLength];
+        }).join('');
+    });
+}
+// мддгодщвпнеъгиаорюнкчпьтвеысяъаххифьккмпюжэзо
 
 export const hillCipher = (message: string, key: any, withMatrix = false): Array<string> => {
     if (!message || !key) return [];
     try {
         const keyMatrix = withMatrix ? matrix(key) : buildKeyMatrix(key);
-        console.log('matrix', keyMatrix);
+        const messageTrigrams = buildMessageTrigrams(message);
+
+        return encrypt(keyMatrix, messageTrigrams);
+    } catch (error) {
+        console.log(error);
+    }
+
+    return [];
+};
+
+export const hillCipherDecode = (message: string, key: any, withMatrix = false): Array<string> => {
+    if (!message || !key) return [];
+    try {
+        const keyMatrix = withMatrix ? matrix(key) : buildKeyMatrix(key);
         const messageTrigrams = buildMessageTrigrams(message);
 
         return decrypt(keyMatrix, messageTrigrams);

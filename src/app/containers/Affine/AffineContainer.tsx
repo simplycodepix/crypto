@@ -87,7 +87,7 @@ class Affine extends React.Component<any, any> {
                             <div className="analysis-content">
                                 <div className="analysis-list">
                                     {analysisResults.map((result: any, i: number) => (
-                                        <AffineResult key={i} result={result} index={i} selected={this.isActiveResult(i)} onClick={() => this.handleResultClick(i)} />
+                                        <AffineResult keyI={result.i} keyJ={result.j} key={i} result={result.decodeResult} index={i} selected={this.isActiveResult(i)} onClick={() => this.handleResultClick(i)} />
                                     ))}
                                 </div>
                                 <div className="analysis-sidebar">

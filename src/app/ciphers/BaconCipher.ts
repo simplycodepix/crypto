@@ -13,10 +13,9 @@ export const baconCipher = (text: string) => {
         return null;
     }).join('');
 
-
     let splitEncodedText: any = encodedText.match(/.{1,5}/g);
     let alphabetArray = alphabet.split('');
-
+    
     return splitEncodedText.map((entry: string) => {
         let letter = alphabetArray[convertBinaryToDecimal(entry)];
 

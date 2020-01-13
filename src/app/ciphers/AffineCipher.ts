@@ -28,6 +28,7 @@ export const affineCipherDecode = (text: string, a: number, b: number, alphabet?
     }
 
     if (a_inv === 0) return;
+    console.log(text, a, b);
 
     return text.split('').map((c: string) => {
         if (c.match(/[a-z]/i)) {
@@ -47,17 +48,16 @@ export const affineCipherAnalyser = (text: string) => {
     let langLength: number = 26;
     let analysisResult = [];
 
-    // let frequencyCounterResult = getFrequencyInDecreasingOrder(frequencyCounter(text));
-    // let compareFrequenciesResult = Math.abs(compareFrequencies(frequencyCounterResult));
-    // let frequencyAnalysisResult = affineCipher(text, compareFrequenciesResult, 1);
-
     for (let i = 1; i <= langLength; i++) {
         for (let j = 1; j <= langLength; j++) {
             let decodeResult = affineCipherDecode(text, i, j);
+            let result = { decodeResult, i, j };
 
-            if (decodeResult) { analysisResult.push(decodeResult); }
+            if (decodeResult) { analysisResult.push(result); }
         }
     }
 
     return analysisResult;
 }
+
+// UBBAHK CAPJKX

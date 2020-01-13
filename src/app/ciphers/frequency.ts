@@ -143,5 +143,9 @@ export const compareFrequencies = (frequencyArray: Array<IFrequency>) => {
     let aCharCode = alphabetFrequencyInOrder[0].char.charCodeAt(0);
     let bCharCode = frequencyArray[0].char.charCodeAt(0);
 
-    return bCharCode - aCharCode;
+    let result = bCharCode - aCharCode;
+
+    if (result < 0) return alphabetFrequency.length + result + 1;
+
+    return result;
 }

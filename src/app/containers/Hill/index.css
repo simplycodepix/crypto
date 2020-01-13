@@ -7,3 +7,23 @@
     display: flex;
     align-items: flex-start;
 }
+
+.matrices {
+    display: flex;
+}
+
+.matrices .input-box {
+    display: block;
+}
+
+.matrices .input-box input {
+    width: 100%;
+}
+
+.matrices .input-box-title {
+    margin-bottom: 10px;
+}
+
+.matrices .input-box:first-child {
+    margin-right: 30px;
+}

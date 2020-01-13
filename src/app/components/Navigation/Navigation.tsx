@@ -21,6 +21,14 @@ const navLinks = [
     {
         to: '/hill',
         title: 'Hill'
+    },
+    {
+        to: '/hilldecode',
+        title: 'Hill decode'
+    },
+    {
+        to: '/hillanalyse',
+        title: 'Hill analyse'
     }
 ]
 

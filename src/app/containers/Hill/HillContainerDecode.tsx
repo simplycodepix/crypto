@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { zeros } from 'mathjs';
 
-import { alphabet, hillCipher } from '../../ciphers/HillCipher';
+import { alphabet, hillCipherDecode } from '../../ciphers/HillCipher';
 import { Matrix } from '../../components/Hill/Matrix';
 
 import './index.css';
@@ -38,9 +38,9 @@ const HillContainer = () => {
         if ((textToEncode.length % 3) === 0 && (stringKey.length % 3) === 0) {
             let encodeResult;
             if (withMatrix) {
-                encodeResult = hillCipher(textToEncode, matrixData, withMatrix).join('');
+                encodeResult = hillCipherDecode(textToEncode, matrixData, withMatrix).join('');
             } else {
-                encodeResult = hillCipher(textToEncode, stringKey).join('');
+                encodeResult = hillCipherDecode(textToEncode, stringKey).join('');
             }
 
             setEncodedText(encodeResult);
@@ -58,7 +58,7 @@ const HillContainer = () => {
         <div className="hill-page">
             <div className="container">
                 <h2 className="hill-page-title">
-                    Hill cipher: Encode Text
+                    Hill cipher: Decode Text
                 </h2>
 
                 <div className="input-box">
@@ -84,7 +84,7 @@ const HillContainer = () => {
 
                 <div className="text">
                     <div className="text-title">
-                        Encoded Text:
+                        Decoded Text:
                     </div>
                     <div className="text-value">
                         {encodedText}
