@@ -19,6 +19,10 @@ const navLinks = [
         title: 'Bacon'
     },
     {
+        to: '/vigenere',
+        title: 'Vigenere'
+    },
+    {
         to: '/hill',
         title: 'Hill'
     },

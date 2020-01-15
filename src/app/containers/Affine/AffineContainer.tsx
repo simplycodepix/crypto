@@ -92,7 +92,7 @@ class Affine extends React.Component<any, any> {
                                 </div>
                                 <div className="analysis-sidebar">
                                     {frequencyAnalysisResult ? <AffineSelectedResult result={frequencyAnalysisResult} resultKey={frequencyAnalysisResultKey} title="Automatically Selected Result: " /> : null}
-                                    {selectedResultId ? <AffineSelectedResult result={analysisResults[selectedResultId]} resultKey={selectedResultId + 1} title="Selected Result: " /> : null}
+                                    {selectedResultId ? <AffineSelectedResult result={analysisResults[selectedResultId]} title="Selected Result: " /> : null}
                                 </div>
                             </div>
                         </div>
