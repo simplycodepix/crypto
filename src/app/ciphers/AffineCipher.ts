@@ -1,7 +1,12 @@
 // import { getFrequencyInDecreasingOrder, frequencyCounter, compareFrequencies } from "./frequency";
+import { gcd } from 'mathjs';
 
 export const affineCipher = (text: string, a: number, b: number, alphabet?: string) => {
     let langLength: number = 26;
+
+    if (!a || !b) return;
+
+    if (gcd(a, b) !== 1) return 'Error: GCD';
 
     return text.split('').map((c: string) => {
         if (c.match(/[a-z]/i)) {
@@ -28,7 +33,6 @@ export const affineCipherDecode = (text: string, a: number, b: number, alphabet?
     }
 
     if (a_inv === 0) return;
-    console.log(text, a, b);
 
     return text.split('').map((c: string) => {
         if (c.match(/[a-z]/i)) {

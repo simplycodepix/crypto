@@ -107,14 +107,16 @@ interface IFrequency {
     frequency: number
 }
 
-export const frequencyCounter = (text: string) => {
+export const frequencyCounter = (text: string, regex?: any) => {
     let frequencyArray: Array<any> = [];
 
     let textLength = text.length;
 
+    regex = regex || /[a-z]/i;
+
     text.split('').map(c => {
         if (!(frequencyArray.filter((entry: IFrequency) => entry.char === c.toUpperCase()).length > 0)) {
-            if (c.match(/[a-z]/i)) {
+            if (c.match(regex)) {
                 frequencyArray.push({ char: c.toUpperCase(), frequency: 1 });
             }
         } else {
@@ -144,6 +146,8 @@ export const compareFrequencies = (frequencyArray: Array<IFrequency>) => {
     let bCharCode = frequencyArray[0].char.charCodeAt(0);
 
     let result = bCharCode - aCharCode;
+
+    console.log(aCharCode, bCharCode, result);
 
     if (result < 0) return alphabetFrequency.length + result + 1;
 
