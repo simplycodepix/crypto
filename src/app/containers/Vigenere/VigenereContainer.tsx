@@ -3,7 +3,23 @@ import React from 'react';
 import './index.css'
 import { viginereCipher } from '../../ciphers/VigenereCipher';
 import { vigenereText } from '../../ciphers/text';
-import { BaconResult } from '../../components/Bacon/BaconResult';
+import { VigenereResult } from '../../components/Vigenere/VigenereResult';
+
+interface IInfoBlock {
+    name: string,
+    value: string
+}
+
+const InfoBlock = ({ name, value }: IInfoBlock) => (
+    <div className="info-block">
+        <div className="info-block-title">
+            {name}
+        </div>
+        <div className="info-block-value">
+            {value}
+        </div>
+    </div>
+)
 
 class VigenereContainer extends React.Component<any, any> {
     constructor(props: any) {
@@ -35,12 +51,13 @@ class VigenereContainer extends React.Component<any, any> {
             decodeResult: result.key,
             blocks: result.blocks,
             frequency: result.frequency,
-            index: result.index
+            index: result.index,
+            decryptedMessage: result.decrypted
         });
     }
 
     render() {
-        const { viginereText, decodeResult, blocks, frequency } = this.state;
+        const { viginereText, decodeResult, blocks, frequency, decryptedMessage, index } = this.state;
 
         return (
             <div className="bacon-page">
@@ -64,8 +81,21 @@ class VigenereContainer extends React.Component<any, any> {
                     </div>
 
                     <div className="bacon-page-result">
-                        {decodeResult ? <BaconResult result={decodeResult} /> : null}
+                        {decodeResult ? <VigenereResult keyWord={decodeResult} message={decryptedMessage} /> : null}
                     </div>
+
+                    <div className="info">
+                        <InfoBlock name="Index: " value={index} />
+                    </div>
+
+                    <div className="info">
+                        {frequency.map((entry: IInfoBlock, i: number) => <InfoBlock key={`frq-${i}`} name={entry.name} value={entry.value} />)}
+                    </div>
+
+                    <div className="info">
+                        {blocks.map((entry: any, i: number) => <InfoBlock key={`blck-${i}`} name="Text Block: " value={entry.str} />)}
+                    </div>
+
                 </div>
             </div>
         );

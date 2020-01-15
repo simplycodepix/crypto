@@ -1,6 +1,5 @@
-import { vigenereText } from './text';
-
 let alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя".split('');
+let alphabetLength = alphabet.length;
 let table = 'о';
 let isLetter = (c: string): boolean => c.toLowerCase() != c.toUpperCase();
 
@@ -33,7 +32,7 @@ export const buildKeyForBlock = (text: string, test?: boolean) => {
 
     for (let j = 0; j < alphabet.length; j++) {
         indexO = alphabet.indexOf(table);
-        if (test) {
+        if (test && secondMaxKey) {
             indexMax = alphabet.indexOf(secondMaxKey.name);
         } else {
             indexMax = alphabet.indexOf(maxKey.name);
@@ -48,15 +47,43 @@ export const buildKeyForBlock = (text: string, test?: boolean) => {
     }
 
     return key;
+};
+
+export const removeSpaces = (text: string) => {
+    return text.split('').map((c: string) => { if (isLetter(c)) return c; }).join('');
 }
+
+export const decryptViginereCipher = (text: string, key: string): string => {
+    let lowerCaseText = text.toLowerCase();
+    let textWithoutSpaces = removeSpaces(lowerCaseText);
+    let splittedText = textWithoutSpaces.split('');
+    let textLength = textWithoutSpaces.length;
+    let decryptedMessage = [];
+    let newKey = [];
+
+    for (let i = 0, j = 0; i < textLength; ++i, ++j) {
+        if (j === key.length)
+            j = 0;
+
+        newKey[i] = key[j];
+    }
+
+    for (let i = 0; i <= textLength; i++) {
+        let indexText = alphabet.indexOf(splittedText[i]);
+        let indexKey = alphabet.indexOf(newKey[i]);
+
+        let result = (indexText - indexKey + alphabetLength) % alphabetLength;
+        decryptedMessage.push(alphabet[result]);
+    }
+
+    return decryptedMessage.join('');
+};
 
 export const viginereCipher = (text: string) => {
     let keyLength: number = 6;
     let lowerCaseText: string = text.toLowerCase();
 
-    let textWithoutSpaces: string = lowerCaseText.split('').map((c: string) => {
-        if (isLetter(c)) return c;
-    }).join('');
+    let textWithoutSpaces: string = removeSpaces(lowerCaseText);
 
     let textLength: number = textWithoutSpaces.length;
 
@@ -120,8 +147,11 @@ export const viginereCipher = (text: string) => {
         alphabet[sixthKey]
     ].join('');
 
+    let decryptedMessage = decryptViginereCipher(text, keyWord);
+
     return {
         key: keyWord,
+        decrypted: decryptedMessage,
         index,
         blocks: [
             { str: blockStr1 },
@@ -134,3 +164,4 @@ export const viginereCipher = (text: string) => {
         frequency: frequencyArray
     };
 };
+
